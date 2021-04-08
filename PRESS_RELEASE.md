@@ -1,5 +1,5 @@
 # Project Name #
-City Meal
+CityMeal
 
 ## Heading ##
 Users can find information for covid free meal sites for New Yorkers 
