@@ -1,5 +1,5 @@
 # Project Name
-Let's Eat
+CityMeal
 
 # Project Description
 To help New Yorkers who can't afford food, CityMeal offers information for free meal sites. Users can check the location on a list and Google map. Users can also rate free meal sites they visited and check ratings from other people. 
