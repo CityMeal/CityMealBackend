@@ -5,10 +5,8 @@ const pg = require('pg-promise')()
 require('dotenv').config()
 
 const db = pg({
-  "host": process.env.HOST,
-  "port": process.env.DBPORT,
   "database": "citymeal",
-  "user": process.env.PGNAME,
+  "user": process.env.PGUSERNAME,
   "password": process.env.PGPASSWORD
 })
 
