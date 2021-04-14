@@ -16,20 +16,20 @@ const knex = require('knex')({
     }
 });
 
-const VerifyToken = require('../auth/VerifyToken');
-
-//TODO: clean up logs in code that are not needed
 class User {
     constructor() {
 
     };
 
+    /**
+     * Registers and creates new User. verifies if user does not already exist, and that password has been created
+     * @returns user data and token
+     */
     async register(req, res) {
         const user = req.body;
 
         //check if email already exists
         const getUser = await knex('users').where({email: user.email})
-        console.log("getUser", getUser)
 
         if(getUser.length !== 0) {
             return res.status(406).json("user already exists");
@@ -69,39 +69,26 @@ class User {
     };
 
     /**
-     * 
-     * 
+     * Expects an email and password. Checks if email exists and password is correct.
+     * @returns user data and token
      */
     async login(req, res) {
         const user = req.body;
-
         //check user has password
         if(!req.body.password) {
             return res.status(500).json ("no password created")
         }
-
         try {
             //find user with email in db
-            let getUser = await knex('users').where({email: user.email})[0]
-
-            console.log('getuser', getUser)
-
+            let getUser = await knex('users').where({email: user.email})
             if(getUser.length === 0) {
                 return res.status(404).json("user not found");
             };
-
-            console.log("hashed pw", getUser[0].password);
-            console.log("request password", user.password);
-
             //verify password
-            const passwordIsValid = await bcrypt.compare(user.password, getUser[0].password);
-            console.log("passwordIsValid", passwordIsValid);
-            
-            //TODO: make sure correct statuses for http codes based on error
+            const passwordIsValid = await bcrypt.compare(user.password, getUser[0].password);            
             if(!passwordIsValid) {
                 return res.status(500).json("incorrect password");
             }
-
             // create a token
             const token = jwt.sign(
                 {
@@ -113,36 +100,75 @@ class User {
                     expiresIn: 86400 // expires in 24 hours
                 }
             );
-
             // //remove password from obj to not send password to 
             delete getUser[0].password;
-            console.log('getuser2', getUser[0])
-
             res.status(200).json({user: getUser[0], token:token});
         }catch (err) {
             return res.status(500).json("error", {error: err} );
         };
     };
 
+    /**
+     * returns a json with a null token, and auth - might delete becasue logout insn't really needed
+     * @param {*} req 
+     * @param {*} res 
+     */
     async logout(req, res) {
-        res.status(200).send({ auth: false, token: null });
+        res.status(200).send({ token: null });
     };
 
-    // async delete(req,res) {
-    //     console.log(req.userid)
-
-    //     try {
-    //         //delete user
-    //     }catch {
-
-    //     }
-        
-    // }
-
-    async testVerifyToken( req, res) {
-        console.log(req.userid)
-        res.send(req.userid)
+     /**
+      * @returns user data, excluding password, based on id saved in token
+      */
+      async getUser(req,res) {
+        try {
+            console.log("token data", req.user.id)
+            //get user data from table
+            let user = await knex('users').where({id:req.user.id})
+            user = user[0]
+            //removes password from user obj
+            delete user.password;
+            //returns user data
+            res.status(200).json({user: user})
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
     }
+
+    /**
+     *Takes in key:value pairs to update user data
+     *@returns updated user object excluding password
+     */
+    async updateUser(req,res) {
+        try {
+            //updates user
+            let updatedUser = await knex('users').where({id:req.user.id}).update(req.body)
+            //get user data from table
+            updatedUser = await knex('users').where({id:req.user.id})
+            updatedUser = updatedUser[0]
+            //removes password from user obj
+            delete updatedUser.password;
+            //returns user data
+            res.status(200).json({user: updatedUser})
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+    };
+
+    /**
+     * Gets user ID from Token and deletes user from table
+     * @returns deleted user id
+     */
+    async deleteUser(req,res) {
+        try {
+            //delete user
+            const deletedUser = await knex('users').where({id:req.user.id}).del();
+            //return user id
+            res.status(200).json({message: "user has been deleted", user_id: req.user.id});
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+    };
 
 }
 
