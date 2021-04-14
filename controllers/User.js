@@ -18,7 +18,6 @@ const knex = require('knex')({
 
 const VerifyToken = require('../auth/VerifyToken');
 
-//TODO: clean up logs in code that are not needed
 class User {
     constructor() {
 
@@ -29,7 +28,6 @@ class User {
 
         //check if email already exists
         const getUser = await knex('users').where({email: user.email})
-        console.log("getUser", getUser)
 
         if(getUser.length !== 0) {
             return res.status(406).json("user already exists");
@@ -68,10 +66,6 @@ class User {
         }
     };
 
-    /**
-     * 
-     * 
-     */
     async login(req, res) {
         const user = req.body;
 
@@ -82,20 +76,14 @@ class User {
 
         try {
             //find user with email in db
-            let getUser = await knex('users').where({email: user.email})[0]
-
-            console.log('getuser', getUser)
+            let getUser = await knex('users').where({email: user.email})
 
             if(getUser.length === 0) {
                 return res.status(404).json("user not found");
             };
 
-            console.log("hashed pw", getUser[0].password);
-            console.log("request password", user.password);
-
             //verify password
             const passwordIsValid = await bcrypt.compare(user.password, getUser[0].password);
-            console.log("passwordIsValid", passwordIsValid);
             
             //TODO: make sure correct statuses for http codes based on error
             if(!passwordIsValid) {
@@ -116,7 +104,6 @@ class User {
 
             // //remove password from obj to not send password to 
             delete getUser[0].password;
-            console.log('getuser2', getUser[0])
 
             res.status(200).json({user: getUser[0], token:token});
         }catch (err) {
@@ -128,21 +115,30 @@ class User {
         res.status(200).send({ auth: false, token: null });
     };
 
-    // async delete(req,res) {
-    //     console.log(req.userid)
-
-    //     try {
-    //         //delete user
-    //     }catch {
-
-    //     }
-        
-    // }
-
-    async testVerifyToken( req, res) {
+    async updateUser(req,res) {
         console.log(req.userid)
-        res.send(req.userid)
-    }
+        try {
+            //update user
+            res.send('updateduser')
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+    };
+
+    async deleteUser(req,res) {
+        console.log("deleteUser controller")
+        console.log("user from verify token",req.user)
+        console.log("user id from verify token",req.user.id)
+
+        try {
+            //delete user
+            const deletedUser = await knex('users').where({id:req.user.id}).del();
+            res.status(200).json({message: "user has been deleted", user_id: req.user.id});
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+
+    };
 
 }
 

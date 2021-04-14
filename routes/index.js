@@ -12,8 +12,9 @@ const user = new User();
 router.post('/register', user.register);
 router.post('/login', user.login);
 
-//test token authentication
-// router.get('/verifyToken',VerifyToken, user.testVerifyToken);
+//USER ROUTERS
+router.delete('/user', VerifyToken, user.deleteUser);
+
 
 
 module.exports = router;
