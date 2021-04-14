@@ -16,6 +16,9 @@ const knex = require('knex')({
     }
 });
 
+const VerifyToken = require('../auth/VerifyToken');
+
+//TODO: clean up logs in code that are not needed
 class User {
     constructor() {
 
@@ -26,18 +29,20 @@ class User {
 
         //check if email already exists
         const getUser = await knex('users').where({email: user.email})
+        console.log("getUser", getUser)
+
         if(getUser.length !== 0) {
-            return res.status(500).json("user already exists");
+            return res.status(406).json("user already exists");
         };
 
         //check if user has password
         if(!req.body.password) {
-            return res.status(500).json ("no password created")
+            return res.status(400).json ("no password created")
         }
 
         //check required fields are filled
         if((!req.body.email) || !(req.body.password) || (!req.body.username) || (!req.body.zipcode)) {
-            return res.status(500).json ("required fields are not filled")
+            return res.status(400).json ("required fields are not filled")
         }
 
         try{
@@ -57,12 +62,16 @@ class User {
                 expiresIn: 86400 // expires in 24 hours
             });
 
-            res.status(200).json({user: createdUser, auth: true, token:token});
+            res.status(200).json({user: createdUser, token:token});
         }catch (err) {
             return res.status(500).json("error", {error: err} )
         }
     };
 
+    /**
+     * 
+     * 
+     */
     async login(req, res) {
         const user = req.body;
 
@@ -73,8 +82,7 @@ class User {
 
         try {
             //find user with email in db
-            //TODO: why does this not throw an error when it returns nothing???? instead it returns []
-            let getUser = await knex('users').where({email: user.email})
+            let getUser = await knex('users').where({email: user.email})[0]
 
             console.log('getuser', getUser)
 
@@ -89,22 +97,28 @@ class User {
             const passwordIsValid = await bcrypt.compare(user.password, getUser[0].password);
             console.log("passwordIsValid", passwordIsValid);
             
+            //TODO: make sure correct statuses for http codes based on error
             if(!passwordIsValid) {
                 return res.status(500).json("incorrect password");
             }
 
             // create a token
-            const token = jwt.sign({
-                id: getUser.id
-            }, config.secret, {
-                expiresIn: 86400 // expires in 24 hours
-            });
+            const token = jwt.sign(
+                {
+                    id: getUser[0].id,
 
-            // //remove password from obj
+                },
+                config.secret,
+                {
+                    expiresIn: 86400 // expires in 24 hours
+                }
+            );
+
+            // //remove password from obj to not send password to 
             delete getUser[0].password;
-            console.log('getuser2', getUser)
+            console.log('getuser2', getUser[0])
 
-            res.status(200).json({user: getUser, auth: true, token:token});
+            res.status(200).json({user: getUser[0], token:token});
         }catch (err) {
             return res.status(500).json("error", {error: err} );
         };
@@ -113,6 +127,22 @@ class User {
     async logout(req, res) {
         res.status(200).send({ auth: false, token: null });
     };
+
+    // async delete(req,res) {
+    //     console.log(req.userid)
+
+    //     try {
+    //         //delete user
+    //     }catch {
+
+    //     }
+        
+    // }
+
+    async testVerifyToken( req, res) {
+        console.log(req.userid)
+        res.send(req.userid)
+    }
 
 }
 
