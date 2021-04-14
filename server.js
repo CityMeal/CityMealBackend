@@ -4,8 +4,6 @@ const express = require('express');
 const app = express();
 const routes = require('./routes/index.js');
 
-
-
 //GLOBAL VARIABLES
 const PORT = process.env.PORT;
 
@@ -15,7 +13,6 @@ const PORT = process.env.PORT;
 app.use(express.json());
 //process form data
 app.use(express.urlencoded({extended:true}));
-
 
 
 //ROUTES

@@ -21,23 +21,28 @@ class User {
 
     };
 
+    /**
+     * Registers and creates new User. verifies if user does not already exist, and that password has been created
+     * @returns user data and token
+     */
     async register(req, res) {
         const user = req.body;
 
         //check if email already exists
         const getUser = await knex('users').where({email: user.email})
+
         if(getUser.length !== 0) {
-            return res.status(500).json("user already exists");
+            return res.status(406).json("user already exists");
         };
 
         //check if user has password
         if(!req.body.password) {
-            return res.status(500).json ("no password created")
+            return res.status(400).json ("no password created")
         }
 
         //check required fields are filled
         if((!req.body.email) || !(req.body.password) || (!req.body.username) || (!req.body.zipcode)) {
-            return res.status(500).json ("required fields are not filled")
+            return res.status(400).json ("required fields are not filled")
         }
 
         try{
@@ -57,61 +62,112 @@ class User {
                 expiresIn: 86400 // expires in 24 hours
             });
 
-            res.status(200).json({user: createdUser, auth: true, token:token});
+            res.status(200).json({user: createdUser, token:token});
         }catch (err) {
             return res.status(500).json("error", {error: err} )
         }
     };
 
+    /**
+     * Expects an email and password. Checks if email exists and password is correct.
+     * @returns user data and token
+     */
     async login(req, res) {
         const user = req.body;
-
         //check user has password
         if(!req.body.password) {
             return res.status(500).json ("no password created")
         }
-
         try {
             //find user with email in db
-            //TODO: why does this not throw an error when it returns nothing???? instead it returns []
             let getUser = await knex('users').where({email: user.email})
-
-            console.log('getuser', getUser)
-
             if(getUser.length === 0) {
                 return res.status(404).json("user not found");
             };
-
-            console.log("hashed pw", getUser[0].password);
-            console.log("request password", user.password);
-
             //verify password
-            const passwordIsValid = await bcrypt.compare(user.password, getUser[0].password);
-            console.log("passwordIsValid", passwordIsValid);
-            
+            const passwordIsValid = await bcrypt.compare(user.password, getUser[0].password);            
             if(!passwordIsValid) {
                 return res.status(500).json("incorrect password");
             }
-
             // create a token
-            const token = jwt.sign({
-                id: getUser.id
-            }, config.secret, {
-                expiresIn: 86400 // expires in 24 hours
-            });
+            const token = jwt.sign(
+                {
+                    id: getUser[0].id,
 
-            // //remove password from obj
+                },
+                config.secret,
+                {
+                    expiresIn: 86400 // expires in 24 hours
+                }
+            );
+            // //remove password from obj to not send password to 
             delete getUser[0].password;
-            console.log('getuser2', getUser)
-
-            res.status(200).json({user: getUser, auth: true, token:token});
+            res.status(200).json({user: getUser[0], token:token});
         }catch (err) {
             return res.status(500).json("error", {error: err} );
         };
     };
 
+    /**
+     * returns a json with a null token, and auth - might delete becasue logout insn't really needed
+     * @param {*} req 
+     * @param {*} res 
+     */
     async logout(req, res) {
-        res.status(200).send({ auth: false, token: null });
+        res.status(200).send({ token: null });
+    };
+
+     /**
+      * @returns user data, excluding password, based on id saved in token
+      */
+      async getUser(req,res) {
+        try {
+            console.log("token data", req.user.id)
+            //get user data from table
+            let user = await knex('users').where({id:req.user.id})
+            user = user[0]
+            //removes password from user obj
+            delete user.password;
+            //returns user data
+            res.status(200).json({user: user})
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+    }
+
+    /**
+     *Takes in key:value pairs to update user data
+     *@returns updated user object excluding password
+     */
+    async updateUser(req,res) {
+        try {
+            //updates user
+            let updatedUser = await knex('users').where({id:req.user.id}).update(req.body)
+            //get user data from table
+            updatedUser = await knex('users').where({id:req.user.id})
+            updatedUser = updatedUser[0]
+            //removes password from user obj
+            delete updatedUser.password;
+            //returns user data
+            res.status(200).json({user: updatedUser})
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+    };
+
+    /**
+     * Gets user ID from Token and deletes user from table
+     * @returns deleted user id
+     */
+    async deleteUser(req,res) {
+        try {
+            //delete user
+            const deletedUser = await knex('users').where({id:req.user.id}).del();
+            //return user id
+            res.status(200).json({message: "user has been deleted", user_id: req.user.id});
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
     };
 
 }
