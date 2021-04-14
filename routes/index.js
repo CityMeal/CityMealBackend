@@ -15,6 +15,7 @@ router.post('/login', user.login);
 //USER ROUTERS
 router.delete('/user', VerifyToken, user.deleteUser);
 router.put('/user', VerifyToken, user.updateUser);
+router.get('/user', VerifyToken, user.getUser);
 
 
 module.exports = router;

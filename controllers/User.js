@@ -117,6 +117,24 @@ class User {
         res.status(200).send({ token: null });
     };
 
+     /**
+      * @returns user data, excluding password, based on id saved in token
+      */
+      async getUser(req,res) {
+        try {
+            console.log("token data", req.user.id)
+            //get user data from table
+            let user = await knex('users').where({id:req.user.id})
+            user = user[0]
+            //removes password from user obj
+            delete user.password;
+            //returns user data
+            res.status(200).json({user: user})
+        }catch (err){
+            return res.status(500).json("error", {error: err});
+        };
+    }
+
     /**
      *Takes in key:value pairs to update user data
      *@returns updated user object excluding password
