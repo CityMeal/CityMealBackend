@@ -12,7 +12,7 @@ const knex = require('knex')({
 });
 
 class APIManager {
-
+    
     
     async populateDB(req, res) {
         try {
