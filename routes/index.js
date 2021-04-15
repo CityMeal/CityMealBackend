@@ -22,7 +22,9 @@ const newAPI = new APIManager()
 //AUTH ROUTERS
 router.post('/register', user.register);
 router.post('/login', user.login);
-router.post('/api', newAPI.sendGetRequest);
+
+//DATABASE ROUTERS
+router.post('/api', newAPI.populateDB);
 
 module.exports = router;
 
