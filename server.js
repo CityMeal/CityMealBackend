@@ -1,8 +1,10 @@
 // DEPENDENCIES
 require('dotenv').config();
 const express = require('express');
+const cors = require('cors')
 const app = express();
 const routes = require('./routes/index.js');
+
 
 //GLOBAL VARIABLES
 const PORT = process.env.PORT;
@@ -11,6 +13,7 @@ const PORT = process.env.PORT;
 
 //parses incoming requests with JSON
 app.use(express.json());
+app.use(cors())
 //process form data
 app.use(express.urlencoded({extended:true}));
 

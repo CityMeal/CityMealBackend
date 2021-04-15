@@ -27,7 +27,6 @@ class User {
      */
     async register(req, res) {
         const user = req.body;
-        console.log(res, res.body, 'line 30')
 
         //check if email already exists
         const getUser = await knex('users').where({email: user.email})
@@ -43,7 +42,7 @@ class User {
 
         //check required fields are filled
         if((!req.body.email) || !(req.body.password) || (!req.body.username) || (!req.body.zipcode)) {
-            return res.status(400).json ("required fields are not filled")
+            res.status(400).json ("required fields are not filled")
         }
 
         try{
@@ -121,7 +120,7 @@ class User {
      /**
       * @returns user data, excluding password, based on id saved in token
       */
-      async getUser(req,res) {
+    async getUser(req,res) {
         try {
             console.log("token data", req.user.id)
             //get user data from table
