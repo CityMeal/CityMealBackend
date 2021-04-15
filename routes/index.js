@@ -10,7 +10,6 @@ const user = new User();
 const newAPI = new APIManager()
 
 
-
 //AUTH ROUTERS
 router.post('/register', user.register);
 router.post('/login', user.login);
@@ -24,3 +23,4 @@ router.get('/user', VerifyToken, user.getUser);
 router.post('/api', newAPI.populateDB);
 
 
+module.exports = router;
