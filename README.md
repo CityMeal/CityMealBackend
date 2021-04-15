@@ -47,6 +47,7 @@ npm install
 ```
 once dependencies have been installed, create a .env file
 ```
+NODE_ENV=development
 HOST = "localhost"
 PORT = 3000
 PGUSERNAME = "{USERNAME}"
