@@ -10,10 +10,9 @@ const routes = require('./routes/index.js');
 const PORT = process.env.PORT;
 
 //MIDDLEWARE
-
+app.use(cors())
 //parses incoming requests with JSON
 app.use(express.json());
-app.use(cors())
 //process form data
 app.use(express.urlencoded({extended:true}));
 
