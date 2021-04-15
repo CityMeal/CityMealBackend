@@ -27,6 +27,7 @@ class User {
      */
     async register(req, res) {
         const user = req.body;
+        console.log(res, res.body, 'line 30')
 
         //check if email already exists
         const getUser = await knex('users').where({email: user.email})
