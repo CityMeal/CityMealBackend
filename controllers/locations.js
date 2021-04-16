@@ -12,23 +12,37 @@ const knex = require('knex')({
 
 class Locations {
 
-//returns all location objects that match the provided zip
-async getLocationsByZip(req,res) {
-    let zipcode = req.params.zipcode
-    try {
-        let locations = await knex('locations').where({
-        zip:zipcode
-        });
-        res.status(200).json({
-            getLocations:locations
-        });
-        } catch (err) {
+    //RETURN ALL LOCATIONS
+    async getAllLocations(req, res){
+        try{
+            let allLocations = await knex('locations')
+            res.status(200).json({
+                locations: allLocations
+            });
+        }catch(err){
             return res.status(500).json({
                 message: err.message
             })
-        } 
+        }
+    }
+
+    //returns all location objects that match the provided zip
+    async getLocationsByZip(req,res) {
+        let zipcode = req.params.zipcode
+        try {
+            let locations = await knex('locations').where({
+                zip:zipcode
+            });
+            res.status(200).json({
+                getLocations:locations
+            });
+            } catch (err) {
+                return res.status(500).json({
+                    message: err.message
+                })
+            } 
         
-}
+    }
 
 async getLocationsByRating(req,res) {
 

@@ -42,7 +42,7 @@ class User {
 
         //check required fields are filled
         if((!req.body.email) || !(req.body.password) || (!req.body.username) || (!req.body.zipcode)) {
-            return res.status(400).json ("required fields are not filled")
+            res.status(400).json ("required fields are not filled")
         }
 
         try{
@@ -120,7 +120,7 @@ class User {
      /**
       * @returns user data, excluding password, based on id saved in token
       */
-      async getUser(req,res) {
+    async getUser(req,res) {
         try {
             console.log("token data", req.user.id)
             //get user data from table
@@ -140,6 +140,7 @@ class User {
      *@returns updated user object excluding password
      */
     async updateUser(req,res) {
+        console.log(req.body, 'line 143')
         try {
             //updates user
             let updatedUser = await knex('users').where({id:req.user.id}).update(req.body)

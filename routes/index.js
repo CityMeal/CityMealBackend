@@ -26,7 +26,8 @@ router.get('/user', VerifyToken, user.getUser);
 
 //DATABASE ROUTERS
   //LOCATIONS
-  router.get('/getLocations/:zipcode')
+  router.get('/locations',locationController.getAllLocations )
+  router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
  //FAVORITES
  router.get('/user/:user_id/getfavorites',favoritesController.getFavorites)
  router.post('/user/:user_id/savefavorite',favoritesController.saveFavorite)
