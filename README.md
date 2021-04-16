@@ -12,13 +12,17 @@ To help New Yorkers who can't afford food, CityMeal offers information for free 
 
 ## Table of Contents
 
-1. [Usage](#Usage)
-1. [Requirements](#requirements)
-1. [Development](#development)
-    1. [Installing Dependencies](#installing-dependencies)
-    1. [Tasks](#tasks)
-1. [Team](#team)
-1. [Contributing](#contributing)
+- [Project Name](#project-name)
+- [Project Description](#project-description)
+  - [Team](#team)
+  - [Table of Contents](#table-of-contents)
+  - [Usage](#usage)
+  - [Requirements](#requirements)
+  - [Development](#development)
+    - [Installing Dependencies](#installing-dependencies)
+    - [Roadmap](#roadmap)
+  - [Contributing](#contributing)
+  - [Style Guide](#style-guide)
 
 ## Usage
 
@@ -39,7 +43,24 @@ To help New Yorkers who can't afford food, CityMeal offers information for free 
 From within the root directory:
 
 ```sh
-<COMMANDS_HERE>
+npm install
+```
+once dependencies have been installed, create a .env file
+```
+NODE_ENV=development
+HOST = "localhost"
+PORT = 3000
+PGUSERNAME = "{USERNAME}"
+PGPASSWORD = "{PASSWORD}"
+DBPORT = {DB PORT}
+```
+
+you will also have to create a config file
+
+```
+module.exports = {
+    'secret':'{SECRET KEY}'
+};
 ```
 
 ### Roadmap
