@@ -1,16 +1,36 @@
 // DEPENDENCIES
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors')
+const APIManager = require('./controllers/api');
 const app = express();
+const cors = require('cors')
 const routes = require('./routes/index.js');
+const { json } = require('express');
 
 
 //GLOBAL VARIABLES
 const PORT = process.env.PORT;
+const NODE_ENV = process.env.NODE_ENV;
+const nycAPI = new APIManager()
+
+//CORS SECURITY CONFIGURATIONS
+// CORS SECURITY CONFIGURATIONS
+const whitelist = ["http://localhost:3000/"]; // will add deployed links to array
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(
+        new Error("Not allowed by CORS, domain needs to be added to whitelist")
+      );
+    }
+  },
+};
+
 
 //MIDDLEWARE
-app.use(cors())
+NODE_ENV === "development" ? app.use(cors()) : app.use(cors(corsOptions));
 //parses incoming requests with JSON
 app.use(express.json());
 //process form data
@@ -27,4 +47,5 @@ app.get('/', (req,res) => {
 //LISTENER
 app.listen(PORT, () => {
     console.log("App is running on PORT: " + PORT);
+    nycAPI.populateDB();
 });

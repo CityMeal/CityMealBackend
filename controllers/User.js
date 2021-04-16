@@ -140,6 +140,7 @@ class User {
      *@returns updated user object excluding password
      */
     async updateUser(req,res) {
+        console.log(req.body, 'line 143')
         try {
             //updates user
             let updatedUser = await knex('users').where({id:req.user.id}).update(req.body)
