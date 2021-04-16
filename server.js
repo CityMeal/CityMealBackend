@@ -1,13 +1,16 @@
 // DEPENDENCIES
 require('dotenv').config();
 const express = require('express');
+const APIManager = require('./controllers/api');
 const app = express();
 const cors = require('cors')
 const routes = require('./routes/index.js');
+const { json } = require('express');
 
 //GLOBAL VARIABLES
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
+const nycAPI = new APIManager()
 
 //CORS SECURITY CONFIGURATIONS
 // CORS SECURITY CONFIGURATIONS
@@ -43,4 +46,5 @@ app.get('/', (req,res) => {
 //LISTENER
 app.listen(PORT, () => {
     console.log("App is running on PORT: " + PORT);
+    nycAPI.populateDB();
 });
