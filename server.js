@@ -13,7 +13,6 @@ const NODE_ENV = process.env.NODE_ENV;
 const nycAPI = new APIManager()
 
 //CORS SECURITY CONFIGURATIONS
-// CORS SECURITY CONFIGURATIONS
 const whitelist = ["http://localhost:3000/"]; // will add deployed links to array
 const corsOptions = {
   origin: function (origin, callback) {
