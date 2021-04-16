@@ -16,7 +16,7 @@ class Favorites {
         const { user_id } = req.params
         const { location_id } = req.body;
 
-        console.log(user_id, location_id)
+   
         const checkFavorite = await knex('favorites').where({
             location_id: location_id,
             user_id: user_id
@@ -59,15 +59,13 @@ class Favorites {
     async deleteFavorite(req, res) {
         const {user_id} = req.params
         const {location_id} = req.body
-        console.log(req.params,'param')
-        console.log(req.body)
         try {
             const deletedFavorite = await knex('favorites').where({
                 location_id: location_id,
                 user_id: user_id
             }).del();
             res.status(200).json({
-                message: "user has been deleted", location_id: location_id,
+                message: `favorite with location ID ${location_id} has been deleted`, location_id: location_id,
                 user_id: user_id
             });
 
