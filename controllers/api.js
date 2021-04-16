@@ -14,16 +14,25 @@ const knex = require('knex')({
 class APIManager {
     
     
-    async populateDB(req, res) {
+    async populateDB() { //req, res) {
+      
+       const checkLocations = await db.any("SELECT * FROM locations LIMIT 10")
+
+        if (checkLocations.length > 0) {
+          //  return res.status(200).json({
+          //      message:'DB already populated'
+          //  })
+          console.log('DB Has Already Been Populated')
+          return
+        }
         try {
             // Gets data from cityofnewyork API 
             const resp = await axios.get('https://data.cityofnewyork.us/resource/sp4a-vevi.json?$$app_token=zQ0LKGccVEwlZVxzizhZQHacj')
 
 
             if (resp.data.length < 1) {
-                return res.status(400).json({
-                    message: "No data returned"
-                })
+                console.log("No Data Received From API")
+                return
             }
             //Maps the array of location objects retrieved by the get request
             resp.data.map(async (location) => {
@@ -40,14 +49,11 @@ class APIManager {
                     latitude: location.latitude
                 });
             })
-            return res.status(200).json({
-                data: resp.data
-            })
+            console.log("DB Has Been Populated")
+            return
         } catch (err) {
             console.log(err)
-            return res.status(500).json({
-                message: err.message
-            })
+            return
         }
     }
 }

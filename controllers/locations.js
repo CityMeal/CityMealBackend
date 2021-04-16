@@ -14,7 +14,7 @@ class Locations {
 
 //returns all location objects that match the provided zip
 async getLocationsByZip(req,res) {
-    let zipcode = req.params.zip
+    let zipcode = req.params.zipcode
     try {
         let locations = await knex('locations').where({
         zip:zipcode
@@ -28,6 +28,10 @@ async getLocationsByZip(req,res) {
             })
         } 
         
+}
+
+async getLocationsByRating(req,res) {
+
 }
 
 }
