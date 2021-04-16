@@ -6,9 +6,10 @@ const VerifyToken = require('../auth/VerifyToken');
 //DATABASE
 const User = require('../controllers/User');
 const APIManager = require('../controllers/api');
+const Rating = require('../controllers/Rating')
 const user = new User();
-const newAPI = new APIManager()
-
+const newAPI = new APIManager();
+const rating = new Rating();
 
 //AUTH ROUTERS
 router.post('/register', user.register);
@@ -22,5 +23,11 @@ router.get('/user', VerifyToken, user.getUser);
 //DATABASE ROUTERS
 router.post('/api', newAPI.populateDB);
 
+//RATINGS ROUTERS
+router.post('/users/:user_id/locations/:location_id/ratings', VerifyToken, rating.createRating);
+router.put('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.updateRating);
+router.delete('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.deleteRating)
+router.get('/users/:user_id/ratings', VerifyToken, rating.getUserRatings )
+router.get('/locations/:location_id/ratings', VerifyToken, rating.getLocationRatings)
 
 module.exports = router;
