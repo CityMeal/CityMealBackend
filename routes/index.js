@@ -6,9 +6,12 @@ const VerifyToken = require('../auth/VerifyToken');
 //DATABASE
 const User = require('../controllers/User');
 const APIManager = require('../controllers/api');
+const Locations = require('../controllers/locations')
+const Favorites = require('../controllers/favorites')
 const user = new User();
-const newAPI = new APIManager()
-
+const nycAPI = new APIManager()
+const locationController = new Locations()
+const favoritesController = new Favorites()
 
 //AUTH ROUTERS
 router.post('/register', user.register);
@@ -20,7 +23,14 @@ router.put('/user', VerifyToken, user.updateUser);
 router.get('/user', VerifyToken, user.getUser);
 
 //DATABASE ROUTERS
-router.post('/api', newAPI.populateDB);
+  //LOCATIONS
+router.post('/api', nytAPI.populateDB);
+
+ //FAVORITES
+ router.get('/user/:user_id/getfavorites',favoritesController.getFavorites)
+ router.post('/user/:user_id/savefavorite',favoritesController.saveFavorite)
+ router.delete('/user/:user_id/deletefavorite',favoritesController.deleteFavorite)
+router.get('/getLocations/:zipcode')
 
 
 module.exports = router;
