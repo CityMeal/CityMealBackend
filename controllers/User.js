@@ -1,4 +1,3 @@
-// const db = require('../db');
 //create,sign, and verify tokens
 const jwt = require('jsonwebtoken');
 //hash password
@@ -42,7 +41,7 @@ class User {
 
         //check required fields are filled
         if((!req.body.email) || !(req.body.password) || (!req.body.username) || (!req.body.zipcode)) {
-            return res.status(400).json ("required fields are not filled")
+            res.status(400).json ("required fields are not filled")
         }
 
         try{
@@ -93,7 +92,6 @@ class User {
             const token = jwt.sign(
                 {
                     id: getUser[0].id,
-
                 },
                 config.secret,
                 {
@@ -109,9 +107,7 @@ class User {
     };
 
     /**
-     * returns a json with a null token, and auth - might delete becasue logout insn't really needed
-     * @param {*} req 
-     * @param {*} res 
+     * @returns a json with a null token, and auth - might delete becasue logout insn't really needed
      */
     async logout(req, res) {
         res.status(200).send({ token: null });
@@ -120,9 +116,8 @@ class User {
      /**
       * @returns user data, excluding password, based on id saved in token
       */
-      async getUser(req,res) {
+    async getUser(req,res) {
         try {
-            console.log("token data", req.user.id)
             //get user data from table
             let user = await knex('users').where({id:req.user.id})
             user = user[0]
@@ -136,8 +131,8 @@ class User {
     }
 
     /**
-     *Takes in key:value pairs to update user data
-     *@returns updated user object excluding password
+     * Takes in key:value pairs to update user data
+     * @returns updated user object excluding password
      */
     async updateUser(req,res) {
         try {
