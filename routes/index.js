@@ -5,6 +5,8 @@ const router = express.Router();
 //AUTHENTICATION MIDDLEWARE
 const VerifyToken = require('../auth/VerifyToken');
 
+const paginate = require('../middleware/paginate')
+
 //CONTROLLERS
 const User = require('../controllers/User');
 const Rating = require('../controllers/Rating')
@@ -26,7 +28,7 @@ router.put('/user', VerifyToken, user.updateUser);
 router.get('/user', VerifyToken, user.getUser);
 
 //LOCATIONS ROUTERS
-router.get('/locations',locationController.getAllLocations )
+router.get('/locations', paginate, locationController.getAllLocations )
 router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
 //FAVORITES ROUTERS
 router.get('/user/:user_id/getfavorites',favoritesController.getFavorites)
