@@ -2,14 +2,9 @@ const axios = require('axios');
 const { response } = require('express');
 const db = require('../db');
 let apiData = []
-const knex = require('knex')({
-    client: 'pg',
-    connection: {
-        database: 'citymeal',
-        user: process.env.PGUSERNAME,
-        password: process.env.PGPASSWORD
-    }
-});
+require('dotenv').config()
+const knexFile = require('../knexfile')
+const knex = require('knex')(knexFile[process.env.NODE_ENV]);
 
 class APIManager {
     

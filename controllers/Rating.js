@@ -1,14 +1,7 @@
 //env vars
 require('dotenv').config()
-
-const knex = require('knex')({
-    client: 'pg',
-    connection: {
-        database: 'citymeal',
-        user: process.env.PGUSERNAME,
-        password: process.env.PGPASSWORD
-    }
-});
+const knexFile = require('../knexfile')
+const knex = require('knex')(knexFile[process.env.NODE_ENV]);
 
 class Rating {
     constructor(){

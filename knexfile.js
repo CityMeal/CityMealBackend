@@ -6,7 +6,7 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      database: 'citymeal',
+      database: process.env.DB_NAME,
       user: process.env.PGUSERNAME,
       password: process.env.PGPASSWORD
     }
@@ -15,7 +15,7 @@ module.exports = {
   staging: {
     client: 'pg',
     connection: {
-      database: 'citymeal',
+      database: process.env.DB_NAME,
       user: process.env.PGUSERNAME,
       password: process.env.PGPASSWORD
     },
@@ -30,11 +30,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: {
-      database: 'citymeal',
-      user: process.env.PGUSERNAME,
-      password: process.env.PGPASSWORD
-    },
+    connection: process.env.DATABASE_URL,
     pool: {
       min: 2,
       max: 10
