@@ -44,9 +44,7 @@ class Favorites {
     async getFavorites(req, res) {
         let userID = req.params.user_id
         try {
-            let favorites = await knex('favorites').where({
-                user_id: userID
-            });
+            let favorites = await db.any(`SELECT * FROM favorites JOIN locations ON favorites.location_id = locations.id AND favorites.user_id = ${userID}`)
             res.status(200).json({
                 favorites: favorites
             });

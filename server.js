@@ -7,6 +7,7 @@ const cors = require('cors')
 const routes = require('./routes/index.js');
 const { json } = require('express');
 
+
 //GLOBAL VARIABLES
 const PORT = process.env.PORT;
 const NODE_ENV = process.env.NODE_ENV;
