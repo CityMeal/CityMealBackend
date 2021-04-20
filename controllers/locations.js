@@ -14,6 +14,12 @@ class Locations {
 
     //RETURN ALL LOCATIONS
     async getAllLocations(req, res){
+        
+        if(req.paginate.isPaginated) {
+            return res.status(200).json(req.paginate.result);
+        }
+
+        //no pagination
         try{
             let allLocations = await knex('locations')
             res.status(200).json({
