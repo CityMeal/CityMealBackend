@@ -54,7 +54,6 @@ PGUSERNAME = "{USERNAME}"
 PGPASSWORD = "{PASSWORD}"
 DBPORT = {DB PORT}
 DB_NAME = {DB NAME}
-DATABASE_URL = { this is used for production. DB URL can be found on heroku}
 secret = citymealsquad
 ```
 
