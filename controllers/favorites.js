@@ -11,12 +11,12 @@ const knex = require('knex')({
 });
 
 class Favorites {
-    
+
     async saveFavorite(req, res) {
         const { user_id } = req.params
         const { location_id } = req.body;
 
-   
+
         const checkFavorite = await knex('favorites').where({
             location_id: location_id,
             user_id: user_id
@@ -44,9 +44,7 @@ class Favorites {
     async getFavorites(req, res) {
         let userID = req.params.user_id
         try {
-            let favorites = await knex('favorites').where({
-                user_id: userID
-            });
+            let favorites = await db.any(`SELECT * FROM favorites JOIN locations ON favorites.location_id = locations.id AND favorites.user_id = ${userID}`)
             res.status(200).json({
                 favorites: favorites
             });
@@ -57,8 +55,8 @@ class Favorites {
         }
     }
     async deleteFavorite(req, res) {
-        const {user_id} = req.params
-        const {location_id} = req.body
+        const { user_id } = req.params
+        const { location_id } = req.params
         try {
             const deletedFavorite = await knex('favorites').where({
                 location_id: location_id,
