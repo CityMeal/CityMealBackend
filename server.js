@@ -17,7 +17,7 @@ const nycAPI = new APIManager()
 const whitelist = ["http://localhost:3000/", "https://citymeal.herokuapp.com/"]; // will add deployed links to array
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log("origin", origin)
+    // console.log("origin", origin)
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
     } else {}
