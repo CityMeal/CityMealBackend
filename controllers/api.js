@@ -1,22 +1,17 @@
 const axios = require('axios');
 const { response } = require('express');
-const db = require('../db');
 let apiData = []
-const knex = require('knex')({
-    client: 'pg',
-    connection: {
-        database: 'citymeal',
-        user: process.env.PGUSERNAME,
-        password: process.env.PGPASSWORD
-    }
-});
+
+require('dotenv').config()
+const knexFile = require('../knexfile')
+const knex = require('knex')(knexFile[process.env.NODE_ENV]);
 
 class APIManager {
     
     
     async populateDB() { //req, res) {
       
-       const checkLocations = await db.any("SELECT * FROM locations LIMIT 10")
+       const checkLocations = await  knex('locations').select('*').limit(10)
 
         if (checkLocations.length > 0) {
           //  return res.status(200).json({
