@@ -1,6 +1,5 @@
 const axios = require('axios');
 const { response } = require('express');
-// const db = require('../db');
 let apiData = []
 
 require('dotenv').config()
@@ -12,8 +11,6 @@ class APIManager {
     
     async populateDB() { //req, res) {
       
-    //    const checkLocations = await db[process.env.NODE_ENV].any("SELECT * FROM locations LIMIT 10")
-
        const checkLocations = await  knex('locations').select('*').limit(10)
 
         if (checkLocations.length > 0) {
