@@ -30,6 +30,8 @@ router.get('/user', VerifyToken, user.getUser);
 //LOCATIONS ROUTERS
 router.get('/locations', paginate, locationController.getAllLocations)
 router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
+router.get('getLocations/:borough',locationController.getLocationsByBorough)
+router.get('getLocations/:position')
 //FAVORITES ROUTERS
 router.get('/user/:user_id/getfavorites', favoritesController.getFavorites)
 router.post('/user/:user_id/savefavorite', favoritesController.saveFavorite)
