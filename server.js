@@ -18,7 +18,7 @@ const whitelist = ["http://localhost:3000/", "https://citymeal.herokuapp.com/"];
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("origin", origin)
-    if (whitelist.indexOf(origin) !== -1) {
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
       callback(null, true);
     } else {
       callback(
