@@ -11,7 +11,7 @@ class APIManager {
     
     async populateDB() { //req, res) {
       
-       const checkLocations = await db.any("SELECT * FROM locations LIMIT 10")
+       const checkLocations = await db[process.env.NODE_ENV].any("SELECT * FROM locations LIMIT 10")
 
         if (checkLocations.length > 0) {
           //  return res.status(200).json({
