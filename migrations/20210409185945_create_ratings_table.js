@@ -1,18 +1,17 @@
 
-exports.up = function(knex) {
-    return knex.schema.createTable('ratings', function(table) {
-        table.increments('id')
-        table.integer('location_id').unsigned().notNullable()
-        table.integer('user_id').unsigned().notNullable()
-        table.integer('rating').notNullable()
-        table.timestamps(true,true)
+exports.up = function (knex) {
+  return knex.schema.createTable('ratings', function (table) {
+    table.increments('id')
+    table.integer('location_id').unsigned().notNullable()
+    table.integer('user_id').unsigned().notNullable()
+    table.integer('rating').notNullable()
+    table.timestamps(true, true)
 
-        table.foreign('location_id').references('id').inTable('locations').onDelete('CASCADE')
-        table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE')
-    })
-  
-};
+    table.foreign('location_id').references('id').inTable('locations').onDelete('CASCADE')
+    table.foreign('user_id').references('id').inTable('users').onDelete('CASCADE')
+  })
+}
 
-exports.down = function(knex) {
-    return knex.schema.dropTable('ratings');
-};
+exports.down = function (knex) {
+  return knex.schema.dropTable('ratings')
+}
