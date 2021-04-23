@@ -28,19 +28,20 @@ router.put('/user', VerifyToken, user.updateUser)
 router.get('/user', VerifyToken, user.getUser)
 
 //LOCATIONS ROUTERS
+//TODO: update locations to return locations, as well as rating for location
 router.get('/locations', paginate, locationController.getAllLocations)
 router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
 //FAVORITES ROUTERS
 //TODO: these routes should have authentication
-router.get('/user/:user_id/getfavorites',favoritesController.getFavorites)
-router.post('/user/:user_id/savefavorite', favoritesController.saveFavorite)
-router.delete('/user/:user_id/:location_id/deletefavorite', favoritesController.deleteFavorite)
+router.get('/user/:user_id/getfavorites',VerifyToken, favoritesController.getFavorites)
+router.post('/user/:user_id/savefavorite', VerifyToken, favoritesController.saveFavorite)
+router.delete('/user/:user_id/:location_id/deletefavorite', VerifyToken,  favoritesController.deleteFavorite)
 
 //RATINGS ROUTERS
 router.post('/users/:user_id/locations/:location_id/ratings', VerifyToken, rating.createRating);
 router.put('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.updateRating);
 router.delete('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.deleteRating)
 router.get('/users/:user_id/ratings', VerifyToken, rating.getUserRatings)
-router.get('/locations/:location_id/ratings', VerifyToken, rating.getLocationRatings)
+router.get('/locations/:location_id/ratings', rating.getLocationRatings)
 
 module.exports = router
