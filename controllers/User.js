@@ -8,10 +8,6 @@ const knexFile = require('../knexfile')
 const knex = require('knex')(knexFile[process.env.NODE_ENV])
 
 class User {
-  constructor () {
-
-  };
-
   /**
      * Registers and creates new User. verifies if user does not already exist, and that password has been created
      * @returns user data and token
@@ -89,7 +85,7 @@ class User {
           expiresIn: 86400 // expires in 24 hours
         }
       )
-      //remove password from obj to not send password to
+      // remove password from obj to not send password to
       delete getUser[0].password
       res.status(200).json({ user: getUser[0], token: token })
     } catch (err) {
@@ -127,7 +123,7 @@ class User {
      */
   async updateUser (req, res) {
     try {
-      //TODO: try to make one request instead of two
+      // TODO: try to make one request instead of two
       // updates user
       let updatedUser = await knex('users').where({ id: req.user.id }).update(req.body)
       // get user data from table
