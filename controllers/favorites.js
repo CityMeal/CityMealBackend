@@ -18,6 +18,7 @@ class Favorites {
       return res.status(500).json('Already Favorited')
     }
     try {
+      //TODO: add a return to savedFavorite query to return better data
       const savedFavorite = await knex('favorites').insert({
         location_id: location_id,
         user_id: user_id
@@ -34,9 +35,13 @@ class Favorites {
 
   //TODO: this needs to get changed to knex query
   async getFavorites (req, res) {
-    const userID = req.params.user_id
+    const userID = parseInt(req.params.user_id)
+    console.log("userID", userID)
     try {
-      const favorites = await db.any(`SELECT * FROM favorites JOIN locations ON favorites.location_id = locations.id AND favorites.user_id = ${userID}`)
+      // const favorites = await db.any(`SELECT * FROM favorites JOIN locations ON favorites.location_id = locations.id AND favorites.user_id = ${userID}`)
+      const favorites = await knex('favorites').join('locations', function() {
+        this.on('favorites.location_id', '=', 'locations.id').andOn('favorites.user_id', '=', userID)
+      }).select('*')
       res.status(200).json({
         favorites: favorites
       })
