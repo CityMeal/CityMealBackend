@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken')
-// var config = require('../config');
 
 /**
  * Middleware to verify token for requests

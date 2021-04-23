@@ -4,10 +4,6 @@ const knexFile = require('../knexfile')
 const knex = require('knex')(knexFile[process.env.NODE_ENV])
 
 class Rating {
-  constructor () {
-
-  };
-
   /**
      * Expects a rating value from 1 to 5
      * @returns rating

@@ -5,7 +5,6 @@ const APIManager = require('./controllers/api')
 const app = express()
 const cors = require('cors')
 const routes = require('./routes/index.js')
-const { json } = require('express')
 
 // GLOBAL VARIABLES
 const PORT = process.env.PORT

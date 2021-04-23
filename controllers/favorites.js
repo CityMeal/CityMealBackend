@@ -1,5 +1,4 @@
-
-const { response } = require('express')
+// const { response } = require('express')
 require('dotenv').config()
 const knexFile = require('../knexfile')
 const knex = require('knex')(knexFile[process.env.NODE_ENV])
@@ -21,7 +20,7 @@ class Favorites {
       const savedFavorite = await knex('favorites').insert({
         location_id: location_id,
         user_id: user_id
-      }).returning(['id','location_id','user_id'])
+      }).returning(['id', 'location_id', 'user_id'])
       res.status(200).json({
         favorite: savedFavorite
       })
@@ -35,7 +34,7 @@ class Favorites {
   async getFavorites (req, res) {
     const userID = parseInt(req.params.user_id)
     try {
-      const favorites = await knex('favorites').join('locations', function() {
+      const favorites = await knex('favorites').join('locations', function () {
         this.on('favorites.location_id', '=', 'locations.id').andOn('favorites.user_id', '=', userID)
       }).select('*')
       res.status(200).json({
@@ -48,9 +47,9 @@ class Favorites {
     }
   }
 
-  //TODO: walk with frontent on how they are deleting Favorite. 
-  //TODO: noticed incorrect location_id is being passed into locaiton_id
-  //TODO: should probably delete favorites based on favorite id
+  // TODO: walk with frontent on how they are deleting Favorite.
+  // TODO: noticed incorrect location_id is being passed into locaiton_id
+  // TODO: should probably delete favorites based on favorite id
   async deleteFavorite (req, res) {
     const { user_id } = req.params
     const { location_id } = req.body

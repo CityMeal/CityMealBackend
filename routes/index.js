@@ -27,17 +27,20 @@ router.delete('/user', VerifyToken, user.deleteUser)
 router.put('/user', VerifyToken, user.updateUser)
 router.get('/user', VerifyToken, user.getUser)
 
-//LOCATIONS ROUTERS
+// LOCATIONS ROUTERS
+// TODO: these routes are not properly formatted. I don't think the path will know the difference between routes 33 34 35
 router.get('/locations', paginate, locationController.getAllLocations)
 router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
-//FAVORITES ROUTERS
+router.get('getLocations/:borough', locationController.getLocationsByBorough)
+router.get('getLocations/:position')
+// FAVORITES ROUTERS
 router.get('/user/:user_id/getfavorites', favoritesController.getFavorites)
 router.post('/user/:user_id/savefavorite', favoritesController.saveFavorite)
 router.delete('/user/:user_id/:location_id/deletefavorite', favoritesController.deleteFavorite)
 
-//RATINGS ROUTERS
-router.post('/users/:user_id/locations/:location_id/ratings', VerifyToken, rating.createRating);
-router.put('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.updateRating);
+// RATINGS ROUTERS
+router.post('/users/:user_id/locations/:location_id/ratings', VerifyToken, rating.createRating)
+router.put('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.updateRating)
 router.delete('/users/:user_id/locations/:location_id/ratings/:rating_id', VerifyToken, rating.deleteRating)
 router.get('/users/:user_id/ratings', VerifyToken, rating.getUserRatings)
 router.get('/locations/:location_id/ratings', VerifyToken, rating.getLocationRatings)
