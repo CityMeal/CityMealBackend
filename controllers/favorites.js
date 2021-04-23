@@ -46,22 +46,7 @@ class Favorites {
         message: err.message
       })
     }
-<<<<<<< HEAD
   }
-=======
-    async deleteFavorite(req, res) {
-        const { user_id } = req.params
-        const { location_id } = req.params
-        try {
-            const deletedFavorite = await knex('favorites').where({
-                location_id: location_id,
-                user_id: user_id
-            }).del();
-            res.status(200).json({
-                message: `favorite with location ID ${location_id} has been deleted`, location_id: location_id,
-                user_id: user_id
-            });
->>>>>>> 501b54984497da7a3cac98a221403f302f961e9e
 
   //TODO: walk with frontent on how they are deleting Favorite. 
   //TODO: noticed incorrect location_id is being passed into locaiton_id
