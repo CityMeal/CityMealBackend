@@ -1,7 +1,5 @@
 const axios = require('axios');
 const { response } = require('express');
-
-
 require('dotenv').config()
 const knexFile = require('../knexfile')
 const knex = require('knex')(knexFile[process.env.NODE_ENV]);
@@ -12,6 +10,7 @@ class APIManager {
     async populateDB() { //req, res) {
       
         const checkLocations = await  knex('locations').select('*').limit(10)
+
 
         if (checkLocations.length > 0) {
           console.log('DB Has Already Been Populated')

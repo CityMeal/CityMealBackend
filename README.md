@@ -53,14 +53,8 @@ PORT = 3000
 PGUSERNAME = "{USERNAME}"
 PGPASSWORD = "{PASSWORD}"
 DBPORT = {DB PORT}
-```
-
-you will also have to create a config file
-
-```
-module.exports = {
-    'secret':'{SECRET KEY}'
-};
+DB_NAME = {DB NAME}
+secret = citymealsquad
 ```
 
 ### Roadmap
