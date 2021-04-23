@@ -84,7 +84,7 @@ class User {
         {
           id: getUser[0].id
         },
-        config.secret,
+        process.env.secret,
         {
           expiresIn: 86400 // expires in 24 hours
         }
