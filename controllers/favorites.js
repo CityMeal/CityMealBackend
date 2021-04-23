@@ -18,7 +18,6 @@ class Favorites {
       return res.status(500).json('Already Favorited')
     }
     try {
-      //TODO: add a return to savedFavorite query to return better data
       const savedFavorite = await knex('favorites').insert({
         location_id: location_id,
         user_id: user_id
@@ -49,6 +48,9 @@ class Favorites {
     }
   }
 
+  //TODO: walk with frontent on how they are deleting Favorite. 
+  //TODO: noticed incorrect location_id is being passed into locaiton_id
+  //TODO: should probably delete favorites based on favorite id
   async deleteFavorite (req, res) {
     const { user_id } = req.params
     const { location_id } = req.body
