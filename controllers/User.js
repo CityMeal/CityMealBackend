@@ -9,9 +9,9 @@ const knex = require('knex')(knexFile[process.env.NODE_ENV])
 
 class User {
   /**
-     * Registers and creates new User. verifies if user does not already exist, and that password has been created
-     * @returns user data and token
-     */
+   * Registers and creates new User. verifies if user does not already exist, and that password has been created
+   * @returns user data and token
+   */
   async register (req, res) {
     const user = req.body
 
@@ -33,7 +33,6 @@ class User {
     }
 
     try {
-      // hash password TODO: insert random number to password
       await bcrypt.hash(req.body.password, 10).then(function (hash) {
         user.password = hash
       })
@@ -50,7 +49,7 @@ class User {
 
       res.status(200).json({ user: createdUser, token: token })
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({error: err})
     }
   };
 
@@ -89,7 +88,7 @@ class User {
       delete getUser[0].password
       res.status(200).json({ user: getUser[0], token: token })
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({error: err})
     };
   };
 
@@ -113,7 +112,7 @@ class User {
       // returns user data
       res.status(200).json({ user: user })
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({error: err})
     };
   }
 
@@ -125,16 +124,14 @@ class User {
     try {
       // TODO: try to make one request instead of two
       // updates user
-      let updatedUser = await knex('users').where({ id: req.user.id }).update(req.body)
-      // get user data from table
-      updatedUser = await knex('users').where({ id: req.user.id })
+      let updatedUser = await knex('users').where({ id: req.user.id }).update(req.body).returning('*')
       updatedUser = updatedUser[0]
       // removes password from user obj
       delete updatedUser.password
       // returns user data
-      res.status(200).json({ user: updatedUser })
+      res.status(200).json(updatedUser)
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({error: err})
     };
   };
 
@@ -149,7 +146,7 @@ class User {
       // return user id
       res.status(200).json({ message: 'user has been deleted', user_id: req.user.id })
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({error: err})
     };
   };
 }

@@ -27,18 +27,16 @@ router.delete('/user', VerifyToken, user.deleteUser)
 router.put('/user', VerifyToken, user.updateUser)
 router.get('/user', VerifyToken, user.getUser)
 
-
-//LOCATIONS ROUTERS
+//LOCATIONS ROUTES
 //TODO: update locations to return locations, as well as rating for location
 router.get('/locations', paginate, locationController.getAllLocations)
 router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
 router.get('getLocations/:borough', locationController.getLocationsByBorough)
-//FAVORITES ROUTERS
-//TODO: these routes should have authentication
+
+//FAVORITES ROUTES
 router.get('/user/:user_id/getfavorites',VerifyToken, favoritesController.getFavorites)
 router.post('/user/:user_id/savefavorite', VerifyToken, favoritesController.saveFavorite)
 router.delete('/user/:user_id/:location_id/deletefavorite', VerifyToken,  favoritesController.deleteFavorite)
-
 
 // RATINGS ROUTERS
 router.post('/users/:user_id/locations/:location_id/ratings', VerifyToken, rating.createRating)
