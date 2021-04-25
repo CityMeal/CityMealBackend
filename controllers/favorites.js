@@ -1,4 +1,3 @@
-// const { response } = require('express')
 require('dotenv').config()
 const knexFile = require('../knexfile')
 const knex = require('knex')(knexFile[process.env.NODE_ENV])
