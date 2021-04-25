@@ -34,7 +34,6 @@ router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
 router.get('getLocations/:borough', locationController.getLocationsByBorough)
 
 //FAVORITES ROUTES
-//TODO: these routes should have authentication
 router.get('/user/:user_id/getfavorites',VerifyToken, favoritesController.getFavorites)
 router.post('/user/:user_id/savefavorite', VerifyToken, favoritesController.saveFavorite)
 router.delete('/user/:user_id/:location_id/deletefavorite', VerifyToken,  favoritesController.deleteFavorite)

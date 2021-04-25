@@ -47,13 +47,11 @@ class Favorites {
     }
   }
 
-  // TODO: walk with frontent on how they are deleting Favorite.
-  // TODO: noticed incorrect location_id is being passed into locaiton_id
-  // TODO: should probably delete favorites based on favorite id
   async deleteFavorite (req, res) {
     const { user_id } = req.params
     const { location_id } = req.body
     try {
+      //It should be delete favorites where favorites id equals favorite id
       const deletedFavorite = await knex('favorites').where({
         location_id: location_id,
         user_id: user_id
