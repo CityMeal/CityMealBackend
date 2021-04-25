@@ -2,9 +2,8 @@
 const express = require('express')
 const router = express.Router()
 
-// AUTHENTICATION MIDDLEWARE
+//MIDDLEWARE
 const VerifyToken = require('../auth/VerifyToken')
-
 const paginate = require('../middleware/paginate')
 
 // CONTROLLERS
