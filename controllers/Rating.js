@@ -48,7 +48,7 @@ class Rating {
       // return rating obj
       return res.status(200).json(rating)
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({ error: err })
     }
   };
 
@@ -67,7 +67,7 @@ class Rating {
 
       return res.status(200).json(updatedRating)
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({ error: err })
     }
   }
 
@@ -80,7 +80,7 @@ class Rating {
       const deleteRating = await knex('ratings').where({ id: req.params.rating_id }).del()
       return res.status(200).json({ message: 'rating has been deleted', rating_id: req.params.rating_id })
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({ error: err })
     }
   }
 
@@ -92,7 +92,7 @@ class Rating {
       const userRatings = await knex('ratings').where({ user_id: req.user.id })
       return res.status(200).json(userRatings)
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({ error: err })
     }
   }
 
@@ -104,7 +104,7 @@ class Rating {
       const locationRatings = await knex('ratings').where({ location_id: req.params.location_id })
       return res.status(200).json(locationRatings)
     } catch (err) {
-      return res.status(500).json('error', { error: err })
+      return res.status(500).json({ error: err })
     }
   }
 };
