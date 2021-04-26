@@ -1,5 +1,4 @@
 
-// const { response } = require('express')
 require('dotenv').config()
 const knexFile = require('../knexfile')
 const knex = require('knex')(knexFile[process.env.NODE_ENV])
@@ -27,8 +26,6 @@ class Locations {
   // returns all location objects that match the provided zip
   async getLocationsByZip (req, res) {
     const zipcode = req.params.zipcode
-    // returns all location objects that match the provided borough
-
     try {
       const locations = await knex('locations').where({
         zip: zipcode
@@ -43,6 +40,7 @@ class Locations {
     }
   }
 
+  // returns all location objects that match the provided borough
   async getLocationsByBorough (req, res) {
     const borough = req.params.borough
     try {
