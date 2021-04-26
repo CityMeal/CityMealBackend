@@ -48,7 +48,7 @@ class Favorites {
 
   async deleteFavorite (req, res) {
     const { user_id } = req.params
-    const { location_id } = req.body
+    const { location_id } = req.params
     try {
       //It should be delete favorites where favorites id equals favorite id
       const deletedFavorite = await knex('favorites').where({
