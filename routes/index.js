@@ -33,9 +33,9 @@ router.get('/getLocations/:zipcode', locationController.getLocationsByZip)
 router.get('getLocations/:borough', locationController.getLocationsByBorough)
 
 //FAVORITES ROUTES
-router.get('/user/:user_id/getfavorites',VerifyToken, favoritesController.getFavorites)
-router.post('/user/:user_id/savefavorite', VerifyToken, favoritesController.saveFavorite)
-router.delete('/user/:user_id/:location_id/deletefavorite', VerifyToken,  favoritesController.deleteFavorite)
+router.get('/user/:user_id/getfavorites', favoritesController.getFavorites)
+router.post('/user/:user_id/savefavorite', favoritesController.saveFavorite)
+router.delete('/user/:user_id/:location_id/deletefavorite',  favoritesController.deleteFavorite)
 
 // RATINGS ROUTERS
 router.post('/users/:user_id/locations/:location_id/ratings', VerifyToken, rating.createRating)
