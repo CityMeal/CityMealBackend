@@ -12,7 +12,7 @@ const NODE_ENV = process.env.NODE_ENV
 const nycAPI = new APIManager()
 
 // CORS SECURITY CONFIGURATIONS
-const whitelist = ['http://localhost:3000', 'https://citymealapp.herokuapp.com'] // will add deployed links to array
+const whitelist = ['http://localhost:3000','http://localhost:3001', 'https://citymealapp.herokuapp.com', 'https://citymeal.herokuapp.com'] // will add deployed links to array
 const corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1 || !origin) {
